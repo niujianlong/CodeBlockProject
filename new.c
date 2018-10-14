@@ -11,11 +11,11 @@ pthread_mutex_t work_mutex;                    //声明互斥量work_mutex
 void *procf(void *arg) //father线程
           { 
              while(1){
-                 //sem_wait(&empty);     //占用一个盘子空间，可放水果数减1
-                 //pthread_mutex_lock(&work_mutex);     //加锁
+                 sem_wait(&empty);     //占用一个盘子空间，可放水果数减1
+                 pthread_mutex_lock(&work_mutex);     //加锁
                  printf("爸爸放入一个苹果!\n");
-                 //sem_post(&apple);     //释放一个apple信号了，可吃苹果数加1
-                 //pthread_mutex_unlock(&work_mutex);   //解锁
+                 sem_post(&apple);     //释放一个apple信号了，可吃苹果数加1
+                 pthread_mutex_unlock(&work_mutex);   //解锁
                  //sleep(3);
              }
 
@@ -23,11 +23,11 @@ void *procf(void *arg) //father线程
 void *procm(void *arg)  //mother线程
           { 
             while(1){
-                //sem_wait(&empty);
-                //pthread_mutex_lock(&work_mutex);     //加锁
+                sem_wait(&empty);
+                pthread_mutex_lock(&work_mutex);     //加锁
                 printf("妈妈放入一个橙子!\n");
-                //sem_post(&orange);
-                //pthread_mutex_unlock(&work_mutex);   //解锁
+                sem_post(&orange);
+                pthread_mutex_unlock(&work_mutex);   //解锁
                 //sleep(4);
             }
            }
@@ -36,15 +36,15 @@ void *procs(void *arg)  //son线程
 			
             while(1){
 				double f = 0.123;
-                //sem_wait(&apple);       //占用一个苹果信号量，可吃苹果数减1 
+                sem_wait(&apple);       //占用一个苹果信号量，可吃苹果数减1 
                 //pthread_mutex_lock(&work_mutex);     //加锁
-                printf("儿子-------------------------------------------吃了一个苹果!\n");
-				for(int i=0;i<0xfffffff;i++)
+                printf("儿子吃了一个苹果!\n");
+				for(int i=0;i<0xfff;i++)
 				{
 					f = f + (i);
-					//printf("f=%f\n",f);
+					printf("f=%f\n",f);
 				}
-                //sem_post(&empty);       //吃了一个苹果，释放一个盘子空间，可放水果数加1
+                sem_post(&empty);       //吃了一个苹果，释放一个盘子空间，可放水果数加1
                 //pthread_mutex_unlock(&work_mutex);   //解锁
                 //sleep(1);
             }
@@ -52,11 +52,11 @@ void *procs(void *arg)  //son线程
 void *procd(void *arg)  //daughter线程
           { 
             while(1){
-                //sem_wait(&orange);
-                //pthread_mutex_lock(&work_mutex);     //加锁
+                sem_wait(&orange);
+                pthread_mutex_lock(&work_mutex);     //加锁
                 printf("女儿吃了一个橙子!\n");
-                //sem_post(&empty);
-                //pthread_mutex_unlock(&work_mutex);   //解锁
+                sem_post(&empty);
+                pthread_mutex_unlock(&work_mutex);   //解锁
                // sleep(2);
             }
 
