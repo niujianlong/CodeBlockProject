@@ -1,3 +1,4 @@
+/*实现了简单的BFS算法*/
 #include <iostream>
 #include <queue>
 #include <vector>
