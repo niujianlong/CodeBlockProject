@@ -1,4 +1,3 @@
-/*实现了简单的BFS算法*/
 #include <iostream>
 #include <queue>
 #include <vector>
@@ -19,7 +18,8 @@ public:
 	//cNodeP.push_back(chNod);
 	//}
 	vector<Node*> getCN(void)const { return cNodeP; }
-	bool operator==(Node& a1) const{ 
+	bool operator==(Node* a1) {
+#if 0
 		if (this->data == a1.data)
 		{
 			return true;
@@ -28,9 +28,9 @@ public:
 		{
 			return false;
 		}
-		
-		//return &(this->data) == &(a1.data); 这里通过data的地址来重载==号是错误，他们的地址肯定是不一样的，因为int BFS(Node<T> root, Node<T> target) 这个声明本身就是值传递，也就是说你现在的a1仅仅是函数内部的对实参g的一个拷贝，所以地址肯定是不一样的，所以在重载==的时候一定要注意是值传递还是指针传递，所以其实最保险的做法是在重载==的实现的内部采用判断值是不是相等而不是判断地址是不是相等。。
-	}
+#endif
+		return this == a1; //指针实现就是为了实现这里，我想使用指针的相等来判定两个对象的相等而不是使用对象的的成员变量的值相等作为判断，因为用成员变量的值来判断其实是不完备的，假如两个对象的的data值都是g,但是它其实并不是我们需要的Node g
+}
 };
 
 template<typename T>
@@ -44,8 +44,8 @@ void Node<T>::addChildNode(Node<T> * chNod)
  * Return the length of the shortest path between root and target node.
  */
 template<typename T>
-int BFS(Node<T> root, Node<T> target) {
-	queue<Node<T>> myqueue;  // store all nodes which are waiting to be processed
+int BFS(Node<T>* root, Node<T>* target) {
+	queue<Node<T>*> myqueue;  // store all nodes which are waiting to be processed
 	int step = 0;       // number of steps neeeded from root to current node
 	// initialize
 	//add root to myqueue;
@@ -56,7 +56,7 @@ int BFS(Node<T> root, Node<T> target) {
 		// iterate the nodes which are already in the queue
 		int size = myqueue.size();
 		for (int i = 0; i < size; ++i) {
-			Node<T> cur = myqueue.front();//the first node in myqueue;
+			Node<T>* cur = myqueue.front();//the first node in myqueue;
 			//return step if cur is target;
 			if (cur == target)
 			{
@@ -70,9 +70,9 @@ int BFS(Node<T> root, Node<T> target) {
 			{
 				//myqueue.push(iter);
 			}
-			for (int i = 0; i < cur.getCN().size(); i++)
+			for (int i = 0; i < cur->getCN().size(); i++)
 			{
-				myqueue.push(*cur.getCN()[i]);
+				myqueue.push(cur->getCN()[i]);
 			}
 			//remove the first node from myqueue;
 			myqueue.pop();
@@ -97,6 +97,8 @@ int main(int argc, char * * argv)
 	c.addChildNode(&e);
 	c.addChildNode(&f);
 	d.addChildNode(&g);
-	int step = BFS(a, g);
+	int step = BFS(&a, &g);
 	cout << "step is " << step << endl;
+	int i = 0;
+	cin >> i;
 }
