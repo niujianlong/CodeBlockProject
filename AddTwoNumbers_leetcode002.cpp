@@ -52,11 +52,12 @@ public:
     }
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         ListNode::iterator it2 = l2->begin();
+        ListNode::iterator it1 = l1->begin();
         bool isBig = false;
-        for(ListNode::iterator it1 = l1->begin();it1!=l1->end();++it1)
-            {
+            do{
         switch(isBig){
             case false:
+                if((it1!=l1->end())&&(it2!=l2->end())){
                 if(((*it1+*it2)<10)){
                     listSum->push_front(*it1+*it2);
                     isBig = false;
@@ -66,8 +67,32 @@ public:
                         listSum->push_front(*it1+*it2-10);
                     isBig = true;
                 }
+               }
+                if((it1==l1->end())&&(it2!=l2->end())){
+                    if(((0+*it2)<10)){
+                    listSum->push_front(0+*it2);
+                    isBig = false;
+                }
+                else
+                    {
+                        listSum->push_front(0+*it2-10);
+                    isBig = true;
+                } 
+                }
+                if((it1!=l1->end())&&(it2==l2->end())){
+                    if(((*it1+0)<10)){
+                    listSum->push_front(*it1+0);
+                    isBig = false;
+                }
+                else
+                    {
+                        listSum->push_front(*it1+0-10);
+                    isBig = true;
+                }
+                }
                 break;
             case true:
+                if((it1!=l1->end())&&(it2!=l2->end())){
                 if(((*it1+*it2+1)<10)){
                     listSum->push_front(*it1+*it2+1);
                     isBig = false;
@@ -77,13 +102,45 @@ public:
                         listSum->push_front(*it1+*it2+1-10);
                     isBig = true;
                 }
+                    }
+                if((it1==l1->end())&&(it2!=l2->end())){
+                if(((0+*it2+1)<10)){
+                    listSum->push_front(0+*it2+1);
+                    isBig = false;
+                }
+                else
+                    {
+                        listSum->push_front(0+*it2+1-10);
+                    isBig = true;
+                }
+                    }
+
+                if((it1!=l1->end())&&(it2==l2->end())){
+                if(((*it1+0+1)<10)){
+                    listSum->push_front(*it1+0+1);
+                    isBig = false;
+                }
+                else
+                    {
+                        listSum->push_front(*it1+0+1-10);
+                    isBig = true;
+                }
+                    }
                 break;
             default:
             break;
 
         }
-        it2++;
-    }
+        if(it1!=l1->end())
+        {
+            ++it1;
+            }
+        
+         if(it2!=l2->end())
+        {
+            ++it2;
+            }
+    } while((it1==l1->end())&&(it2==l2->end()));
         listSum->reverse();
         return listSum;
     }
@@ -93,7 +150,7 @@ private:
 
 int main()
 {
-    std::forward_list<int> l1 = { 2,4,3 };
+    std::forward_list<int> l1 = { 4,3 };
     std::forward_list<int> l2 = { 5,6,4 };
     std::forward_list<int>* listSum;
     Solution mys;
