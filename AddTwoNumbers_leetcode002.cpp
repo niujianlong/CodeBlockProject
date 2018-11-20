@@ -13,10 +13,19 @@ Explanation: 342 + 465 = 807.
 #include <iostream>
 #include <forward_list>
  
-std::ostream& operator<<(std::ostream& ostr, const std::forward_list<int>& list)
+std::ostream& operator<<(std::ostream& ostr,  std::forward_list<int>* list)
 {
-    for (auto &i : list) {
-        ostr << " " << i;
+    //for (auto &i : list) {
+      //  ostr << " " << i;
+    //}
+    //for( std::forward_list<int>::iterator it = list->begin();it!=list->end();++it)
+        {
+      //      ostr << " " << *it;
+    }
+
+    for(std::forward_list<int>::iterator it1 = list->begin();it1!=list->end();++it1)
+        {
+            ostr<< " "<<*it1;
     }
     return ostr;
 }
@@ -31,7 +40,16 @@ std::ostream& operator<<(std::ostream& ostr, const std::forward_list<int>& list)
 class Solution {
 public:
     typedef  std::forward_list<int> ListNode;
-    Solution(ListNode* ln):listSum(ln){}
+    Solution(){
+        listSum = new ListNode();
+    }
+    ~Solution()
+        {
+         if(listSum)
+            {
+               delete listSum;
+         }
+    }
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         ListNode::iterator it2 = l2->begin();
         bool isBig = false;
@@ -77,10 +95,11 @@ int main()
 {
     std::forward_list<int> l1 = { 2,4,3 };
     std::forward_list<int> l2 = { 5,6,4 };
-    std::forward_list<int> listSum;
-    Solution mys(&listSum);
-    mys.addTwoNumbers(&l1, &l2);
-    
+    std::forward_list<int>* listSum;
+    Solution mys;
+    listSum = mys.addTwoNumbers(&l1, &l2);
+
+   
     std::cout << "before:     " << listSum << "\n";
     //list.sort();
     //std::cout << "ascending:  " << list << "\n";
