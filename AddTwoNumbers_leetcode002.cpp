@@ -1,3 +1,15 @@
+/*
+You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+Example:
+
+Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+Output: 7 -> 0 -> 8
+Explanation: 342 + 465 = 807.
+
+*/
 #include <iostream>
 #include <forward_list>
  
@@ -19,7 +31,7 @@ std::ostream& operator<<(std::ostream& ostr, const std::forward_list<int>& list)
 class Solution {
 public:
     typedef  std::forward_list<int> ListNode;
-    Solution(ListNode ln):listSum(&ln){}
+    Solution(ListNode* ln):listSum(ln){}
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         ListNode::iterator it2 = l2->begin();
         bool isBig = false;
@@ -54,6 +66,7 @@ public:
         }
         it2++;
     }
+        listSum->reverse();
         return listSum;
     }
 private:
@@ -65,12 +78,12 @@ int main()
     std::forward_list<int> l1 = { 2,4,3 };
     std::forward_list<int> l2 = { 5,6,4 };
     std::forward_list<int> listSum;
-    Solution mys(listSum);
+    Solution mys(&listSum);
     mys.addTwoNumbers(&l1, &l2);
     
     std::cout << "before:     " << listSum << "\n";
     //list.sort();
     //std::cout << "ascending:  " << list << "\n";
-    listSum.reverse();
-    std::cout << "descending: " << listSum << "\n";
+    //listSum.reverse();
+    //std::cout << "descending: " << listSum << "\n";
 }
