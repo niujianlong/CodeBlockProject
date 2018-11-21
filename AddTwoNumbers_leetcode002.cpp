@@ -141,6 +141,13 @@ public:
 				++it2;
 			}
 		} while ((it1 != l1->end()) || (it2 != l2->end()));
+            if(isBig==true)/*应对下面这个情况
+                            l1=[9,9]
+                            l2=[1]l2=[1]	
+                            The sum could have an extra carry of one at the end, which is easy to forget.*/
+            {
+                listSum->push_front(1);
+            }
 		listSum->reverse();
 		return listSum;
 	}
@@ -150,8 +157,8 @@ private:
 
 int main()
 {
-	std::forward_list<int> l1 = { 4,4 };
-	std::forward_list<int> l2 = { 5,6,4 };
+	std::forward_list<int> l1 = { 9,9 };
+	std::forward_list<int> l2 = { 9,9 };
 	std::forward_list<int>* listSum;
 	Solution mys;
 	listSum = mys.addTwoNumbers(&l1, &l2);
