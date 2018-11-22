@@ -1,11 +1,10 @@
-#include <QCoreApplication>
-
 #include <iostream>
 #include <string>
 #include <unordered_set>
 #include <set>
 #include <vector>
 #include <algorithm>
+#include <map>
 using namespace std;
 /*
 Given a string, find the length of the longest substring without repeating characters.
@@ -70,8 +69,25 @@ public:
     }
 };
 
+class Solution1 {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int left = 0, len = 0;
+        map<char, int> dict;
+        for (int right=0; right<s.size(); right++) {
+            if (dict.find(s[right]) != dict.end()) {
+                left = max(left, dict[s[right]] + 1);
+            }
+            dict[s[right]] = right;
+            len = max(len, right - left + 1);
+        }
+        return len;
+    }
+};
+
+
 int main(int argc, char * * argv)
 {
-    cout<<Solution().lengthOfLongestSubstring("pwwkew")<<endl;
+    cout<<Solution1().lengthOfLongestSubstring("pwwkew")<<endl;
 }
 
